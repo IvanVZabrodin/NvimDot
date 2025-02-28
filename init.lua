@@ -1,0 +1,1 @@
+require("good.core.good")
