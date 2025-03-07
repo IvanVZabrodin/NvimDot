@@ -26,6 +26,8 @@ M.defaults = {
 	}
 }
 
+-- Scrap loaded idea, maybe something else like a 
+
 ---@class Nibble.Loaded
 ---@field crayon table?
 M.loaded = {}

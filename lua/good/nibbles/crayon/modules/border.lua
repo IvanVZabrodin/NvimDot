@@ -5,11 +5,12 @@ local use_handler_opts = require("good.nibbles.crayon.modules.lsp").use_handler_
 
 ---@class Nibble.Crayon.Module.Border.Options
 ---@field default string? The default border to use in case of no override
----@field native string?
----@field cmp string?
+---@field lsp string?
 ---@field wk string?
 ---@field neotree string?
 ---@field dressing string?
+---@field lazy string?
+---@field mason string?
 ---@field no_override_lsp boolean?
 ---@field lsp_handlers table? The lsp handlers to override
 M.defaults = {
@@ -51,7 +52,7 @@ local borders = {
 		highlight = "GoodBorder", -- TODO: Find a way to use loaded.crayon.modules.highlight.border instead (but its loaded also during strap)
 	},
 	none = {
-		chars = { " ", " ", " ", " ", " ", " ", " ", " " },
+		chars = { "", "", "", "", "", "", "", "" },
 		highlight = "Normal"
 	}
 }
@@ -64,11 +65,13 @@ end
 ---@param opts Nibble.Crayon.Module.Border.Options
 config.strap = function (opts)
 	local loaded = {
-		native = convert.native(get_border(opts.native, opts.default)),
-		cmp = convert.cmp(get_border(opts.cmp, opts.default)),
+		native = convert.native(get_border(opts.lsp, opts.default)),
+		cmp = convert.cmp(get_border(opts.lsp, opts.default)),
 		wk = convert.native(get_border(opts.wk, opts.default)),
 		dressing = convert.native(get_border(opts.dressing, opts.default)),
-		neotree = convert.native(get_border(opts.neotree, opts.default))
+		neotree = convert.native(get_border(opts.neotree, opts.default)),
+		lazy = convert.native(get_border(opts.lazy, opts.default)),
+		mason = convert.native(get_border(opts.mason, opts.default))
 	}
 
 	return loaded
@@ -83,6 +86,11 @@ loader.post = function (opts)
 	if opts.no_override_lsp ~= true then
 		local native_border = require("good.nibbles").loaded.crayon.modules.border.native
 		for _, h in ipairs(opts.lsp_handlers) do use_handler_opts(h, { border = native_border }) end
+		local old = vim.diagnostic.open_float
+		vim.diagnostic.open_float = function (args)
+			args = args or {}
+			return old(vim.tbl_deep_extend('force', { border = native_border }, args))
+		end
 	end
 end
 

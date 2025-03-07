@@ -3,7 +3,14 @@ return {
 		"williamboman/mason.nvim",
 		dependencies = { "mason-org/mason-registry" },
 		cmd = { "Mason" },
-		opts = {},
+		opts = function ()
+			local mason_border = require("good.nibbles").loaded.crayon.modules.border.mason
+			return {
+				ui = {
+					border = mason_border
+				}
+			}
+		end
 	},
 	{
 		"hrsh7th/nvim-cmp",
@@ -11,11 +18,16 @@ return {
 		dependencies = { "onsails/lspkind.nvim" },
 		config = function ()
 			local cmp = require("cmp")
+			local context = require("cmp.config.context")
 			local lspkind = require("lspkind")
 
 			local cmp_border = cmp.config.window.bordered(require("good.nibbles").loaded.crayon.modules.border.cmp)
 
 			cmp.setup {
+				enabled = function ()
+					return not (context.in_syntax_group("Comment") or context.in_syntax_group("String"))
+				end,
+
 				sources = {
 					{ name = "lazydev", group_index = 0 },
 					{ name = "nvim_lsp" },
@@ -46,15 +58,23 @@ return {
 					docs = { auto_open = true },
 				},
 
+				---@diagnostic disable
 				performance = {
 					fetching_timeout = 1,
 				},
+				---@diagnostic enable
 
+				---@diagnostic disable
 				formatting = {
 					format = lspkind.cmp_format {
 						mode = "symbol"
 					}
-				}
+				},
+				---@diagnostic enable
+
+				-- experimental = {
+				-- 	ghost_text = true
+				-- }
 			}
 		end
 	},
@@ -88,8 +108,22 @@ return {
 				handlers = {
 					function (server_name)
 						require("lspconfig")[server_name].setup {}
+					end,
+
+					["basedpyright"] = function ()
+						require("lspconfig").basedpyright.setup {
+							settings = {
+								basedpyright = {
+									analysis = {
+										typeCheckingMode = "standard"
+									}
+								}
+							}
+						}
 					end
-				}
+				},
+				ensure_installed = {},
+				automatic_installation = true
 			}
 		end
 	},
@@ -123,4 +157,38 @@ return {
 			},
 		},
 	},
+	{
+		"ray-x/lsp_signature.nvim",
+		event = { "InsertEnter" },
+		opts = function ()
+			local border = require("good.nibbles").loaded.crayon.modules.border.native
+
+			return { border = border }
+		end
+	},
+	{
+		"stevearc/conform.nvim",
+		event = { "BufWritePre", "BufNewFile" },
+		cmd = { "ConformInfo" },
+		opts = { format_on_save = {} }
+	},
+	{
+		"mimikun/mason-conform.nvim",
+		dependencies = { "williamboman/mason.nvim" },
+		event = { "BufReadPost", "BufNewFile" },
+		cmd = { "ConformInstall", "ConformUninstall" },
+		lazy = vim.fn.argc(-1) == 0,
+		opts = {
+			handlers = {
+				function (formatter)
+					require("conform").formatters_by_ft = require("mason-conform").formatter_handler(formatter)
+				end
+			}
+		}
+	},
+	-- {
+	-- 	"mfussenegger/nvim-dap",
+	-- 	cmd = "Dap",
+	-- 	opts = {}
+	-- }
 }

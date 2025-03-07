@@ -5,6 +5,7 @@ local M = {}
 
 ---@class Nibble.Crayon.Options.Module
 ---@field enabled boolean
+---@field opts table?
 ---@field module Nibble.Crayon.Module?
 
 ---@class Nibble.Crayon.Options
@@ -32,11 +33,16 @@ M.defaults = {
 	theme = "alldefaults"
 }
 
+-- A crayon module should have its own themes, which can then be set instead of opts
+
+-- Module opts would be like this
+---@class Nibble.Crayon.Module.Opts
+---@field themed table The options defined by the theme chosen
+---@field theme_name string? The name of the theme chosen (unless it is given by a table)
+---@field eopts table? The extra unthemed opts
+
 ---@class Nibble.Crayon.Theme
----@field highlight Nibble.Crayon.Module.Highlight.Options?
----@field border Nibble.Crayon.Module.Border.Options?
----@field lsp Nibble.Crayon.Module.Lsp.Options?
----@field icon Nibble.Crayon.Module.Icon.Options?
+---@field name string
 
 ---@type table<string, Nibble.Crayon.Theme>
 M.themes = {
@@ -44,7 +50,9 @@ M.themes = {
 }
 
 ---@class Nibble.Crayon.Module
----@field defaults table?
+---@field default_theme string
+---@field themes table
+---@field eopts table?
 ---@field config Nibble.ScheduledLoader
 ---@field loader Nibble.ScheduledLoader
 
@@ -87,7 +95,7 @@ config.strap = function (opts)
 
 	for name, module in pairs(opts.modules) do
 		if module.enabled == true then
-			local mod, options = load_module(module.module or name, theme[name])
+			local mod, options = load_module(module.module or name, vim.tbl_deep_extend('force', theme[name] or {}, module.opts or {}))
 
 			if mod.config.strap then
 				loaded.modules[name] = mod.config.strap(options)

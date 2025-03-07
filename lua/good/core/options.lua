@@ -21,6 +21,10 @@ M.constants = function (opts)
 	set.tabstop = opts.tabwidth
 	set.softtabstop = opts.tabwidth
 	set.shiftwidth = opts.tabwidth
+
+	set.clipboard = "unnamedplus"
+
+	vim.o.formatexpr = "v:lua.require('conform').formatexpr()"
 end
 
 return M

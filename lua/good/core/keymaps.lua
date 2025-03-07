@@ -11,6 +11,7 @@ local default_maps = {
 
 		maps = {
 			hover = { "m", fullmap = true },
+			diagnostics = { "M", fullmap = true },
 			definition = "d",
 			declaration = "D",
 			implementation = "i",
@@ -37,6 +38,21 @@ local default_maps = {
 			left = "",
 			float = { "\\", fullmap = true }
 		}
+	},
+	trouble = {
+		subleader = "t",
+
+		maps = {
+			open = ""
+		}
+	},
+	misc = {
+		subleader = "",
+		fullmap = true,
+
+		maps = {
+			ciw = "<C-c>"
+		}
 	}
 }
 
@@ -49,13 +65,14 @@ local default_definitions = {
 
 		maps = {
 			hover = { "<CMD>lua vim.lsp.buf.hover()<CR>", desc = "hover" },
+			diagnostics = "<CMD>lua vim.diagnostic.open_float()<CR>",
 			definition = "<CMD>lua vim.lsp.buf.definition()<CR>",
 			declaration = "<CMD>lua vim.lsp.buf.declaration()<CR>",
 			implementation = "<CMD>lua vim.lsp.buf.implementation()<CR>",
 			type_definition = "<CMD>lua vim.lsp.buf.type_definition()<CR>",
 			references = "<CMD>lua vim.lsp.buf.references()<CR>",
 			signature_help = "<CMD>lua vim.lsp.buf.signature_help()<CR>",
-			rename = "<CMD>lua.lsp.buf.rename()<CR>"
+			rename = "<CMD>lua vim.lsp.buf.rename()<CR>"
 		}
 	},
 	telescope = {
@@ -78,7 +95,25 @@ local default_definitions = {
 
 		maps = {
 			left = "<CMD>Neotree filesystem reveal left<CR>",
-			float = "<CMD>Neotree filesystem reveal float<CR>"
+			float = "<CMD>Neotree buffers reveal float<CR>"
+		}
+	},
+	trouble = {
+		icon_layer = "trouble",
+		descprompt = "open trouble ",
+		opts = { silent = true },
+
+		maps = {
+			open = "<CMD>Trouble diagnostics<CR>"
+		}
+	},
+	misc = {
+		icon_layer = "misc",
+		descprompt = "",
+		opts = { silent = true },
+
+		maps = {
+			ciw = "ciw"
 		}
 	}
 }
@@ -119,7 +154,7 @@ end
 M.load_lsp = function (event)
 	vim.keymap.del('n', 'K', { buffer = event.buf })
 
-	M.load_submap(loaded.lsp, { buffer = event.buf })
+	M.load_submap(loaded.lsp)
 end
 
 M.load = function ()

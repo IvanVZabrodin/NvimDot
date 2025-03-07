@@ -3,7 +3,7 @@ local M = {}
 
 ---@class Nibble.Crayon.Module.Stc.Options
 M.defaults = {
-	ft_ignore = { "alpha", "help", "neo-tree" },
+	ft_ignore = {},
 	bt_ignore = {}
 }
 
@@ -40,6 +40,8 @@ local loader = {}
 
 loader.strap = function (opts)
 	vim.opt.relativenumber = true
+	vim.opt.signcolumn = "yes"
+	vim.opt.numberwidth = 7
 end
 
 loader.load = function (opts)
@@ -49,24 +51,9 @@ loader.load = function (opts)
 		callback = function (args) update_stcs(opts) end
 	})
 
-	-- vim.api.nvim_create_autocmd({ "WinLeave", "BufLeave" }, {
-	-- 	callback = function (args)
-	-- 		-- print(vim.inspect(args))
-	-- 		local bufnr = args.buf
-	-- 		local winid = vim.fn.bufwinid(bufnr)
-	--
-	-- 		if winid == -1 then return end
-	--
-	-- 		local ft = vim.bo[bufnr].filetype
-	-- 		local bt = vim.bo[bufnr].buftype
-	--
-	-- 		if vim.list_contains(opts.ft_ignore, ft) or vim.list_contains(opts.bt_ignore, bt) then
-	-- 			vim.wo[bufnr].statuscolumn = ""
-	-- 		else
-	-- 			vim.wo[winid].statuscolumn = stcs.inactive
-	-- 		end
-	-- 	end
-	-- })
+	vim.api.nvim_create_autocmd("VimEnter", {
+		callback = function (args) vim.defer_fn(function () update_stcs(opts) end, 25) end
+	})
 end
 
 M.loader = loader

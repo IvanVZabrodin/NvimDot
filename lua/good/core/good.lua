@@ -24,11 +24,15 @@ local options = require("good.core.options")
 
 local startup = require("good.core.startup")
 
-local function lazystart(_)
-	require("lazy").setup {
-		import = "good.plugins",
-		checker = { enabled = true },
-	}
+local function lazystart(opts)
+	local lazy_border = require("good.nibbles").loaded.crayon.modules.border.lazy
+
+	require("lazy").setup( "good.plugins", {
+		change_detection = { notify = false },
+		ui = { border = lazy_border},
+		checker = { enabled = true, notify = false },
+		}
+	)
 end
 
 startup.components = {

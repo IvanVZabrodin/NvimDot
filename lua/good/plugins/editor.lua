@@ -35,7 +35,7 @@ return {
 		},
 		opts = {
 			options = {
-				ignore_focus = { "neo-tree" },
+				ignore_focus = { "neo-tree", "help", "trouble", "alpha" },
 			},
 			sections = {
 				lualine_c = {

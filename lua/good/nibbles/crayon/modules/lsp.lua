@@ -38,6 +38,22 @@ M.config = config
 ---@type Nibble.ScheduledLoader
 local loader = {}
 
+loader.strap = function (opts)
+	local diagicons = require("good.nibbles").loaded.crayon.modules.icon.diagnostics or {}
+
+
+	vim.diagnostic.config {
+		signs = {
+			text = {
+				[vim.diagnostic.severity.INFO] = diagicons.info,
+				[vim.diagnostic.severity.HINT] = diagicons.hint,
+				[vim.diagnostic.severity.WARN] = diagicons.warn,
+				[vim.diagnostic.severity.ERROR] = diagicons.error
+			}
+		}
+	}
+end
+
 M.loader = loader
 
 return M
