@@ -80,7 +80,7 @@ return {
 	},
 	{
 		"stevearc/dressing.nvim",
-		lazy = false,
+		event = "VeryLazy",
 		opts = function ()
 			local dressing_border = require("good.nibbles").loaded.crayon.modules.border.dressing
 			return {

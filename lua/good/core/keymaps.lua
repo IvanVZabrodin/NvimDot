@@ -18,7 +18,8 @@ local default_maps = {
 			type_definition = "t",
 			references = "r",
 			signature_help = "s",
-			rename = "R"
+			rename = "R",
+			neogen = "A"
 		}
 	},
 	telescope = {
@@ -53,6 +54,17 @@ local default_maps = {
 		maps = {
 			ciw = "<C-c>"
 		}
+	},
+	glance = {
+		fullmap = true,
+		subleader = ",g",
+
+		maps = {
+			definition = "d",
+			references = "r",
+			type_definition = "t",
+			implementation = "i"
+		}
 	}
 }
 
@@ -72,7 +84,8 @@ local default_definitions = {
 			type_definition = "<CMD>lua vim.lsp.buf.type_definition()<CR>",
 			references = "<CMD>lua vim.lsp.buf.references()<CR>",
 			signature_help = "<CMD>lua vim.lsp.buf.signature_help()<CR>",
-			rename = "<CMD>lua vim.lsp.buf.rename()<CR>"
+			rename = "<CMD>lua vim.lsp.buf.rename()<CR>",
+			neogen = { "<CMD>Neogen<CR>", desc = "Generate annotations" }
 		}
 	},
 	telescope = {
@@ -114,6 +127,18 @@ local default_definitions = {
 
 		maps = {
 			ciw = "ciw"
+		}
+	},
+	glance = {
+		icon_layer = "glance",
+		descprompt = "glance ",
+		opts = { silent = true },
+
+		maps = {
+			definition = "<CMD>Glance definitions<CR>",
+			references = "<CMD>Glance references<CR>",
+			type_definition = "<CMD>Glance type_definition<CR>",
+			implementation = "<CMD>Glance implementations<CR>"
 		}
 	}
 }

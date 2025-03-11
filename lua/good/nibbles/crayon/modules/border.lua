@@ -36,7 +36,7 @@ local convert = {
 	cmp = function (border)
 		return {
 			border = border.chars,
-			winhighlight = "FloatBorder:" .. border.highlight .. ",CursorLine:Visual,Search:None"
+			winhighlight = "FloatBorder:" .. border.highlight
 		}
 	end
 }

@@ -24,13 +24,14 @@ return {
 			local cmp_border = cmp.config.window.bordered(require("good.nibbles").loaded.crayon.modules.border.cmp)
 
 			cmp.setup {
-				enabled = function ()
-					return not (context.in_syntax_group("Comment") or context.in_syntax_group("String"))
-				end,
+				-- enabled = function ()
+				-- 	return not (context.in_syntax_group("Comment") or context.in_syntax_group("String"))
+				-- end,
 
 				sources = {
 					{ name = "lazydev", group_index = 0 },
 					{ name = "nvim_lsp" },
+					{ name = "buffer" },
 				},
 
 				preselect = cmp.PreselectMode.None,
@@ -134,7 +135,26 @@ return {
 		event = { "BufReadPost", "BufNewFile" },
 		cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
 		lazy = vim.fn.argc(-1) == 0,
-		main = "nvim-treesitter.configs"
+		config = function ()
+			require("nvim-treesitter.configs").setup {
+				auto_install = true,
+				ensure_installed = {},
+				ignore_install = {},
+				modules = {},
+				sync_install = true,
+				textobjects = {
+					swap = {
+						enable = true,
+						swap_next = {
+							[",>"] = "@parameter.inner",
+						},
+						swap_previous = {
+							[",<"] = "@parameter.inner",
+						},
+					},
+				},
+			}
+		end
 	},
 	{
 		"shellRaining/hlchunk.nvim",
@@ -158,19 +178,12 @@ return {
 		},
 	},
 	{
-		"ray-x/lsp_signature.nvim",
-		event = { "InsertEnter" },
-		opts = function ()
-			local border = require("good.nibbles").loaded.crayon.modules.border.native
-
-			return { border = border }
-		end
-	},
-	{
 		"stevearc/conform.nvim",
 		event = { "BufWritePre", "BufNewFile" },
 		cmd = { "ConformInfo" },
-		opts = { format_on_save = {} }
+		opts = {
+			format_on_save = {},
+		}
 	},
 	{
 		"mimikun/mason-conform.nvim",
@@ -182,10 +195,29 @@ return {
 			handlers = {
 				function (formatter)
 					require("conform").formatters_by_ft = require("mason-conform").formatter_handler(formatter)
-				end
+				end,
 			}
 		}
 	},
+	{
+		"ray-x/lsp_signature.nvim",
+		event = { "InsertEnter" },
+		opts = function ()
+			local border = require("good.nibbles").loaded.crayon.modules.border.native
+
+			return { border = border }
+		end
+	},
+	{
+		"DNLHC/glance.nvim",
+		cmd = "Glance",
+		opts = {}
+	},
+	{
+		"danymat/neogen",
+		cmd = "Neogen",
+		opts = {}
+	}
 	-- {
 	-- 	"mfussenegger/nvim-dap",
 	-- 	cmd = "Dap",
