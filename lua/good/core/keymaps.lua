@@ -4,6 +4,7 @@ local util = require("good.util")
 ---@diagnostic disable-next-line
 table.unpack = table.unpack or unpack
 
+
 local default_maps = {
 	lsp = {
 		fullmap = true,
@@ -64,6 +65,17 @@ local default_maps = {
 			references = "r",
 			type_definition = "t",
 			implementation = "i"
+		}
+	},
+	jupyter = {
+		subleader = "j",
+
+		maps = {
+			cell = "c",
+			above = "a",
+			all = "A",
+			line = "l",
+			range = "r"
 		}
 	}
 }
@@ -139,6 +151,19 @@ local default_definitions = {
 			references = "<CMD>Glance references<CR>",
 			type_definition = "<CMD>Glance type_definition<CR>",
 			implementation = "<CMD>Glance implementations<CR>"
+		}
+	},
+	jupyter = {
+		icon_layer = "jupyter",
+		descprompt = "run ",
+		opts = { silent = true },
+
+		maps = {
+			cell = [[<CMD>lua require("quarto.runner").run_cell()<CR>]],
+			above = [[<CMD>lua require("quarto.runner").run_above()<CR>]],
+			all = [[<CMD>lua require("quarto.runner").run_above()<CR>]],
+			line = [[<CMD>lua require("quarto.runner").run_line()<CR>]],
+			range = [[<CMD>lua require("quarto.runner").run_range()<CR>]]
 		}
 	}
 }

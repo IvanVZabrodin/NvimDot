@@ -52,6 +52,14 @@ loader.strap = function (opts)
 			}
 		}
 	}
+
+	vim.api.nvim_create_autocmd("FileType", {
+		pattern = "cpp",
+		callback = function()
+			vim.bo.cindent = true
+			vim.bo.cinoptions = "g2,h2"
+		end,
+	})
 end
 
 M.loader = loader

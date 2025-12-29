@@ -15,6 +15,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+
 vim.g.mapleader = " "
 
 local nibbles = require("good.nibbles")
@@ -31,7 +32,10 @@ local function lazystart(opts)
 		change_detection = { notify = false },
 		ui = { border = lazy_border},
 		checker = { enabled = true, notify = false },
+		dev = {
+			path = "C:/users/i_zabrodin23/code/nvimplugins"
 		}
+	}
 	)
 end
 
@@ -53,3 +57,29 @@ startup.register {
 }
 
 startup.load(options.load(require("good.options.options")))
+
+-- local should_profile = os.getenv("NVIM_PROFILE")
+--if should_profile then
+--  require("profile").instrument_autocmds()
+--  if should_profile:lower():match("^start") then
+--    require("profile").start("*")
+--  else
+--    require("profile").instrument("*")
+--  end
+--end
+
+--local function toggle_profile()
+--  local prof = require("profile")
+--  if prof.is_recording() then
+--    prof.stop()
+--    vim.ui.input({ prompt = "Save profile to:", completion = "file", default = "profile.json" }, function(filename)
+--      if filename then
+--        prof.export(filename)
+--        vim.notify(string.format("Wrote %s", filename))
+--      end
+--    end)
+--  else
+--    prof.start("*")
+--  end
+--end
+--vim.keymap.set("", "<f1>", toggle_profile)

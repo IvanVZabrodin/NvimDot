@@ -81,7 +81,7 @@ return {
 	},
 	{
 		"neovim/nvim-lspconfig",
-		event = { "BufReadPost", "BufNewFile" },
+		event = { "BufReadPre", "BufNewFile" },
 		cmd = { "LspInfo", "LspInstall", "LspStart" },
 		lazy = vim.fn.argc(-1) == 0,
 		dependencies = {
@@ -106,33 +106,59 @@ return {
 			require("mason")
 
 			require("mason-lspconfig").setup {
-				handlers = {
-					function (server_name)
-						require("lspconfig")[server_name].setup {}
-					end,
-
-					["basedpyright"] = function ()
-						require("lspconfig").basedpyright.setup {
-							settings = {
-								basedpyright = {
-									analysis = {
-										typeCheckingMode = "standard"
-									}
-								}
-							}
-						}
-					end
-				},
+				automatic_enable = true,
 				ensure_installed = {},
-				automatic_installation = true
+				-- handlers = {
+				-- 	function (server_name)
+				-- 		require("lspconfig")[server_name].setup {
+				-- 			on_attach = function ()
+				-- 				require("lsp_signature").on_attach()
+				-- 			end
+				-- 		}
+				-- 	end,
+				--
+				-- 	["basedpyright"] = function ()
+				-- 		require("lspconfig").basedpyright.setup {
+				-- 			settings = {
+								-- basedpyright = {
+								-- 	analysis = {
+								-- 		typeCheckingMode = "standard"
+								-- 	}
+								-- }
+				-- 			}
+				-- 		}
+				-- 	end,
+				--
+				-- 	-- ["yamlls"] = function ()
+				-- 	-- 	require("lspconfig").yamlls.setup {
+				-- 	-- 		settings = {
+				-- 	-- 			yaml = {
+				-- 	-- 				schemas = 
+				-- 	-- 			}
+				-- 	-- 		}
+				-- 	-- 	}
+				-- 	-- end
+				-- },
+				-- ensure_installed = {},
+				-- automatic_installation = true
 			}
+
+			vim.lsp.config("basedpyright", {
+				settings = {
+					basedpyright = {
+						analysis = {
+							typeCheckingMode = "standard"
+						}
+					}
+				}
+			})
 		end
 	},
 	{
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
 		dependencies = { { "nvim-treesitter/nvim-treesitter-textobjects" } },
-		event = { "BufReadPost", "BufNewFile" },
+		event = { "BufReadPre", "BufNewFile" },
 		cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
 		lazy = vim.fn.argc(-1) == 0,
 		config = function ()
@@ -182,7 +208,15 @@ return {
 		event = { "BufWritePre", "BufNewFile" },
 		cmd = { "ConformInfo" },
 		opts = {
-			format_on_save = {},
+			format_on_save = {
+				timeout_ms = 5000,
+			},
+			formatters = {
+				["clang-format"] = {
+					append_args = { "-style=file" }
+				}
+			},
+			log_level = vim.log.levels.DEBUG
 		}
 	},
 	{
@@ -216,6 +250,38 @@ return {
 	{
 		"danymat/neogen",
 		cmd = "Neogen",
+		opts = {}
+	},
+	{
+		"benlubas/molten-nvim",
+		ft = "markdown",
+		init = function ()
+			vim.g.molten_auto_image_popup = true
+			vim.g.molten_virt_lines_off_by_1 = true
+			vim.g.molten_wrap_output = true
+		end,
+		-- opts = {}
+	},
+	{
+		"quarto-dev/quarto-nvim",
+		ft = "markdown",
+		opts = {
+			codeRunner = {
+				enabled = true,
+				default_method = "molten"
+			}
+		}
+	},
+	{
+		"goerz/jupytext.nvim",
+		ft = "markdown",
+		opts = {
+			filetype = "markdown"
+		}
+	},
+	{
+		"jmbuhr/otter.nvim",
+		ft = "markdown",
 		opts = {}
 	}
 	-- {

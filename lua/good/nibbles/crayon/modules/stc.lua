@@ -1,6 +1,8 @@
 ---@type Nibble.Crayon.Module
 local M = {}
 
+-- TODO: When closing a help window (like a floating info), it seems that the enter into the float is called, but the enter back into the original window does not get autocommanded
+
 ---@class Nibble.Crayon.Module.Stc.Options
 M.defaults = {
 	ft_ignore = {},
@@ -47,7 +49,7 @@ end
 loader.load = function (opts)
 	vim.opt.statuscolumn = stcs.inactive
 
-	vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter", "BufWinEnter" }, {
+	vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter", "BufWinEnter", "WinClosed" }, {
 		callback = function (args) update_stcs(opts) end
 	})
 

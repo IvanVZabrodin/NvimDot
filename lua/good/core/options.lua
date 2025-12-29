@@ -25,6 +25,8 @@ M.constants = function (opts)
 	set.clipboard = "unnamedplus"
 
 	vim.o.formatexpr = "v:lua.require('conform').formatexpr()"
+
+	vim.g.python3_host_prog = "C:/Users/i_zabrodin23/Apps/python3.13/python.exe"
 end
 
 return M

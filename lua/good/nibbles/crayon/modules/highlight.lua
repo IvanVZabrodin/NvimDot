@@ -5,8 +5,11 @@ local M = {}
 M.defaults = {
 	border = { name = "GoodBorder", definition = { link = "FloatBorder" } },
 	mainline = { name = "GoodCurrentLine", definition = { link = "CursorLineNr" } },
-	otherline = { name = "GoodOtherLine", definition = { link = "LineNr" } }
+	otherline = { name = "GoodOtherLine", definition = { link = "LineNr" } },
+	alphaheader = { name = "AlphaHeader", definition = { link = "DiagnosticWarn" }, change = true }
 }
+
+local changes = {}
 
 ---@type Nibble.ScheduledLoader
 local config = {}
@@ -28,6 +31,7 @@ M.config = config
 local loader = {}
 
 loader.post = function (opts)
+
 end
 
 M.loader = loader
