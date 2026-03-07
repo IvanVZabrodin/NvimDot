@@ -22,6 +22,13 @@ M.constants = function (opts)
 	set.softtabstop = opts.tabwidth
 	set.shiftwidth = opts.tabwidth
 
+	set.foldmethod = "expr"
+	set.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+	set.foldtext = ""
+	set.foldlevel = 99
+	set.foldnestmax = 4
+	set.foldcolumn = "1"
+
 	set.clipboard = "unnamedplus"
 
 	vim.o.formatexpr = "v:lua.require('conform').formatexpr()"

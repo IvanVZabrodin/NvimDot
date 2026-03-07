@@ -37,6 +37,7 @@ return {
 				preselect = cmp.PreselectMode.None,
 
 				mapping = cmp.mapping.preset.insert {
+					["<C-j>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
 					["<CR>"] = cmp.mapping.confirm { select = false },
 				},
 
@@ -100,7 +101,10 @@ return {
 
 			vim.api.nvim_create_autocmd("LspAttach", {
 				desc = "LSP actions",
-				callback = require("good.core.keymaps").load_lsp
+				callback = function (args)
+					require("good.core.keymaps").load_lsp(args)
+					require("lsp_signature").on_attach()
+				end
 			})
 
 			require("mason")

@@ -10,9 +10,36 @@ M.defaults = {
 }
 
 local stcs = {
-	active = [[ %s%C%= %#GoodOtherLine#%{v:relnum?v:relnum:''}%#GoodCurrentLine#%{v:relnum?'':v:lnum}%#StatusColumn# ]],
-	inactive = [[ %s%C%= %#GoodOtherLine#%{v:lnum}%#StatusColumn# ]]
+	active = [[ %s %#GoodCurrentLine#%{v:relnum?'':v:lua.statuscol.foldarrow()}%#GoodOtherLine#%{v:relnum?v:lua.statuscol.foldarrow():''}%=%#GoodOtherLine#%{v:lua.statuscol.relline()}%#GoodCurrentLine#%{v:lua.statuscol.currentline()}%#StatusColumn# ]],
+	inactive = [[ %s %{v:lua.statuscol.foldarrow()}%=%#GoodOtherLine#%{v:lnum}%#StatusColumn# ]]
 }
+
+_G.statuscol = {}
+
+_G.statuscol.foldarrow = function ()
+	if vim.v.virtnum ~= 0 then return " " end
+	local lnum = vim.v.lnum
+
+	if vim.fn.foldlevel(lnum - 1) < vim.fn.foldlevel(lnum) then
+		if vim.fn.foldclosed(lnum) == -1 then
+			return "▾"
+		else
+			return "▸"
+		end
+	end
+
+	return " "
+end
+
+_G.statuscol.currentline = function ()
+	if vim.v.virtnum ~= 0 then return "" end
+	return vim.v.relnum == 0 and vim.v.lnum or ""
+end
+
+_G.statuscol.relline = function ()
+	-- if vim.v.virtnum ~= 0 then return "" end
+	return vim.v.relnum ~= 0 and vim.v.relnum or ""
+end
 
 local update_stcs = function (opts)
 	local active = vim.api.nvim_get_current_win()

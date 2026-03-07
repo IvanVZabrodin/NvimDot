@@ -25,9 +25,9 @@ return {
 	{
 		"codewars",
 		dev = true,
-		-- lazy = true,
+		lazy = true,
 		opts = {},
-		-- cmd = "Codewars"
+		cmd = "Codewars"
 	},
 	{
 		"folke/which-key.nvim",
