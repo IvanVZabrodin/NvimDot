@@ -34,6 +34,9 @@ local function lazystart(opts)
 		checker = { enabled = true, notify = false },
 		dev = {
 			path = "C:/users/i_zabrodin23/code/nvimplugins"
+		},
+		rocks = {
+			enabled = false
 		}
 	}
 	)

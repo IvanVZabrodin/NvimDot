@@ -23,6 +23,10 @@ M.defaults = {
 	crayon = {
 		enabled = true,
 		opts = require("good.nibbles.crayon").defaults
+	},
+	sec = {
+		enabled = true,
+		opts = require("good.nibbles.sec").defaults
 	}
 }
 

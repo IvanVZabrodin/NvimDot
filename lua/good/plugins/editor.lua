@@ -1,27 +1,27 @@
 return {
-	-- {
-	-- 	"LmanTW/themify.nvim",
-	-- 	priority = 1000,
-	-- 	lazy = false,
-	-- 	opts = {
-	-- 		"catppuccin/nvim",
-	-- 		"folke/tokyonight.nvim",
-	-- 		"rose-pine/neovim",
-	-- 		"rebelot/kanagawa.nvim"
-	-- 	}
-	-- },
+	{
+		"LmanTW/themify.nvim",
+		priority = 1000,
+		lazy = false,
+		opts = {
+			"catppuccin/nvim",
+			"folke/tokyonight.nvim",
+			"rose-pine/neovim",
+			"rebelot/kanagawa.nvim"
+		}
+	},
 	{
 		"stevearc/profile.nvim",
 		lazy = false,
 		priority = 1000
 	},
-	{
-		"crayon",
-		dev = true,
-		priority = 100,
-		lazy = false,
-		opts = {}
-	},
+	-- {
+	-- 	"crayon",
+	-- 	dev = true,
+	-- 	priority = 100,
+	-- 	lazy = false,
+	-- 	opts = {}
+	-- },
 	{
 		"codewars",
 		dev = true,
@@ -79,6 +79,7 @@ return {
 	{
 		"nvim-neo-tree/neo-tree.nvim",
 		event = "VeryLazy",
+		tag = "3.38.0",
 		cmd = "Neotree",
 		lazy = vim.fn.argc(-1) == 0,
 		dependencies = {

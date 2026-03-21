@@ -37,12 +37,22 @@ _G.statuscol.currentline = function ()
 end
 
 _G.statuscol.relline = function ()
-	-- if vim.v.virtnum ~= 0 then return "" end
+	if vim.v.virtnum ~= 0 then return "" end
 	return vim.v.relnum ~= 0 and vim.v.relnum or ""
 end
 
+local function get_root_win()
+  local win = vim.api.nvim_get_current_win()
+
+  while vim.api.nvim_win_get_config(win).relative ~= "" do
+    win = vim.fn.win_getid(vim.fn.winnr('#'))
+  end
+
+  return win
+end
+
 local update_stcs = function (opts)
-	local active = vim.api.nvim_get_current_win()
+	local active = get_root_win()
 
 	for _, w in ipairs(vim.api.nvim_list_wins()) do
 		if vim.api.nvim_win_get_config(w).relative == "" then

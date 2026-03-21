@@ -62,7 +62,7 @@ return {
 
 				---@diagnostic disable
 				performance = {
-					fetching_timeout = 1,
+					fetching_timeout = 200,
 				},
 				---@diagnostic enable
 
@@ -103,7 +103,7 @@ return {
 				desc = "LSP actions",
 				callback = function (args)
 					require("good.core.keymaps").load_lsp(args)
-					require("lsp_signature").on_attach()
+					-- require("lsp_signature").on_attach()
 				end
 			})
 
@@ -239,11 +239,11 @@ return {
 	},
 	{
 		"ray-x/lsp_signature.nvim",
+		-- commit = "02629e5bc38f6cb1a49bb43ff4a441f23335a933",
 		event = { "InsertEnter" },
-		opts = function ()
+		config = function (_, opts)
 			local border = require("good.nibbles").loaded.crayon.modules.border.native
-
-			return { border = border }
+			require("lsp_signature").setup({ bind = true, debug = true})
 		end
 	},
 	{
